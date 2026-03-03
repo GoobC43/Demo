@@ -1,0 +1,1328 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2867
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 .AppleSystemUIFontMonospaced-Regular;\f1\fnil\fcharset0 HelveticaNeue;\f2\fmodern\fcharset0 CourierNewPSMT;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red143\green191\blue255;\red219\green222\blue226;
+\red255\green255\blue255;\red244\green92\blue111;\red164\green123\blue237;\red252\green153\blue92;\red105\green169\blue255;
+\red88\green96\blue106;\red117\green230\blue138;}
+{\*\expandedcolortbl;;\cssrgb\c0\c1\c1;\cssrgb\c62383\c80091\c100000;\cssrgb\c88451\c89632\c90980;
+\cssrgb\c100000\c100000\c99971;\cssrgb\c97504\c45665\c50925;\cssrgb\c70649\c57746\c94466;\cssrgb\c99851\c66820\c43433;\cssrgb\c47948\c72737\c100000;
+\cssrgb\c41716\c45257\c49075;\cssrgb\c51938\c90776\c61161;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs28 \cf2 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec3 "use client"\cf2 \strokec4 ;\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6 import
+\f0 \cf2 \strokec4  \{ cn \} 
+\f1 \cf2 \strokec6 from
+\f0 \cf2 \strokec3  "@/lib/utils"\cf2 \strokec4 ;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6 import
+\f0 \cf2 \strokec4  \{ useRef, useEffect, useCallback, useState \} 
+\f1 \cf2 \strokec6 from
+\f0 \cf2 \strokec3  "react"\cf2 \strokec4 ;\cf2 \strokec5 \
+\
+
+\f1 \cf2 \strokec6 interface
+\f0 \cf2 \strokec7  GlobeProps\cf2 \strokec4  \{\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec8   className
+\f1 \cf2 \strokec6 ?:
+\f0 \cf2 \strokec9  string\cf2 \strokec4 ;\cf2 \strokec5 \
+\cf2 \strokec8   size
+\f1 \cf2 \strokec6 ?:
+\f0 \cf2 \strokec9  number\cf2 \strokec4 ;\cf2 \strokec5 \
+\cf2 \strokec8   dotColor
+\f1 \cf2 \strokec6 ?:
+\f0 \cf2 \strokec9  string\cf2 \strokec4 ;\cf2 \strokec5 \
+\cf2 \strokec8   arcColor
+\f1 \cf2 \strokec6 ?:
+\f0 \cf2 \strokec9  string\cf2 \strokec4 ;\cf2 \strokec5 \
+\cf2 \strokec8   markerColor
+\f1 \cf2 \strokec6 ?:
+\f0 \cf2 \strokec9  string\cf2 \strokec4 ;\cf2 \strokec5 \
+\cf2 \strokec8   autoRotateSpeed
+\f1 \cf2 \strokec6 ?:
+\f0 \cf2 \strokec9  number\cf2 \strokec4 ;\cf2 \strokec5 \
+\cf2 \strokec8   connections
+\f1 \cf2 \strokec6 ?:
+\f0 \cf2 \strokec4  \{ \cf2 \strokec8 from
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec4  [\cf2 \strokec9 number\cf2 \strokec4 , \cf2 \strokec9 number\cf2 \strokec4 ]; \cf2 \strokec8 to
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec4  [\cf2 \strokec9 number\cf2 \strokec4 , \cf2 \strokec9 number\cf2 \strokec4 ] \}[];\cf2 \strokec5 \
+\cf2 \strokec8   markers
+\f1 \cf2 \strokec6 ?:
+\f0 \cf2 \strokec4  \{ \cf2 \strokec8 lat
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec9  number\cf2 \strokec4 ; \cf2 \strokec8 lng
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec9  number\cf2 \strokec4 ; \cf2 \strokec8 label
+\f1 \cf2 \strokec6 ?:
+\f0 \cf2 \strokec9  string\cf2 \strokec4  \}[];\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4 \}\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6 const
+\f0 \cf2 \strokec9  DEFAULT_MARKERS
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  [\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4   \{ lat: \cf2 \strokec9 37.78\cf2 \strokec4 , lng: 
+\f1 \cf2 \strokec6 -
+\f0 \cf2 \strokec9 122.42\cf2 \strokec4 , label: \cf2 \strokec3 "San Francisco"\cf2 \strokec4  \},\cf2 \strokec5 \
+\cf2 \strokec4   \{ lat: \cf2 \strokec9 51.51\cf2 \strokec4 , lng: 
+\f1 \cf2 \strokec6 -
+\f0 \cf2 \strokec9 0.13\cf2 \strokec4 , label: \cf2 \strokec3 "London"\cf2 \strokec4  \},\cf2 \strokec5 \
+\cf2 \strokec4   \{ lat: \cf2 \strokec9 35.68\cf2 \strokec4 , lng: \cf2 \strokec9 139.69\cf2 \strokec4 , label: \cf2 \strokec3 "Tokyo"\cf2 \strokec4  \},\cf2 \strokec5 \
+\cf2 \strokec4   \{ lat: 
+\f1 \cf2 \strokec6 -
+\f0 \cf2 \strokec9 33.87\cf2 \strokec4 , lng: \cf2 \strokec9 151.21\cf2 \strokec4 , label: \cf2 \strokec3 "Sydney"\cf2 \strokec4  \},\cf2 \strokec5 \
+\cf2 \strokec4   \{ lat: \cf2 \strokec9 1.35\cf2 \strokec4 , lng: \cf2 \strokec9 103.82\cf2 \strokec4 , label: \cf2 \strokec3 "Singapore"\cf2 \strokec4  \},\cf2 \strokec5 \
+\cf2 \strokec4   \{ lat: \cf2 \strokec9 55.76\cf2 \strokec4 , lng: \cf2 \strokec9 37.62\cf2 \strokec4 , label: \cf2 \strokec3 "Moscow"\cf2 \strokec4  \},\cf2 \strokec5 \
+\cf2 \strokec4   \{ lat: 
+\f1 \cf2 \strokec6 -
+\f0 \cf2 \strokec9 23.55\cf2 \strokec4 , lng: 
+\f1 \cf2 \strokec6 -
+\f0 \cf2 \strokec9 46.63\cf2 \strokec4 , label: \cf2 \strokec3 "S\'e3o Paulo"\cf2 \strokec4  \},\cf2 \strokec5 \
+\cf2 \strokec4   \{ lat: \cf2 \strokec9 19.43\cf2 \strokec4 , lng: 
+\f1 \cf2 \strokec6 -
+\f0 \cf2 \strokec9 99.13\cf2 \strokec4 , label: \cf2 \strokec3 "Mexico City"\cf2 \strokec4  \},\cf2 \strokec5 \
+\cf2 \strokec4   \{ lat: \cf2 \strokec9 28.61\cf2 \strokec4 , lng: \cf2 \strokec9 77.21\cf2 \strokec4 , label: \cf2 \strokec3 "Delhi"\cf2 \strokec4  \},\cf2 \strokec5 \
+\cf2 \strokec4   \{ lat: \cf2 \strokec9 36.19\cf2 \strokec4 , lng: \cf2 \strokec9 44.01\cf2 \strokec4 , label: \cf2 \strokec3 "Erbil"\cf2 \strokec4  \},\cf2 \strokec5 \
+\cf2 \strokec4 ];\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6 const
+\f0 \cf2 \strokec9  DEFAULT_CONNECTIONS
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec4  \{ \cf2 \strokec8 from
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec4  [\cf2 \strokec9 number\cf2 \strokec4 , \cf2 \strokec9 number\cf2 \strokec4 ]; \cf2 \strokec8 to
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec4  [\cf2 \strokec9 number\cf2 \strokec4 , \cf2 \strokec9 number\cf2 \strokec4 ] \}[] 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4   [\cf2 \strokec5 \
+\cf2 \strokec4     \{ from: [\cf2 \strokec9 37.78\cf2 \strokec4 , 
+\f1 \cf2 \strokec6 -
+\f0 \cf2 \strokec9 122.42\cf2 \strokec4 ], to: [\cf2 \strokec9 51.51\cf2 \strokec4 , 
+\f1 \cf2 \strokec6 -
+\f0 \cf2 \strokec9 0.13\cf2 \strokec4 ] \},\cf2 \strokec5 \
+\cf2 \strokec4     \{ from: [\cf2 \strokec9 51.51\cf2 \strokec4 , 
+\f1 \cf2 \strokec6 -
+\f0 \cf2 \strokec9 0.13\cf2 \strokec4 ], to: [\cf2 \strokec9 35.68\cf2 \strokec4 , \cf2 \strokec9 139.69\cf2 \strokec4 ] \},\cf2 \strokec5 \
+\cf2 \strokec4     \{ from: [\cf2 \strokec9 35.68\cf2 \strokec4 , \cf2 \strokec9 139.69\cf2 \strokec4 ], to: [
+\f1 \cf2 \strokec6 -
+\f0 \cf2 \strokec9 33.87\cf2 \strokec4 , \cf2 \strokec9 151.21\cf2 \strokec4 ] \},\cf2 \strokec5 \
+\cf2 \strokec4     \{ from: [\cf2 \strokec9 37.78\cf2 \strokec4 , 
+\f1 \cf2 \strokec6 -
+\f0 \cf2 \strokec9 122.42\cf2 \strokec4 ], to: [\cf2 \strokec9 1.35\cf2 \strokec4 , \cf2 \strokec9 103.82\cf2 \strokec4 ] \},\cf2 \strokec5 \
+\cf2 \strokec4     \{ from: [\cf2 \strokec9 51.51\cf2 \strokec4 , 
+\f1 \cf2 \strokec6 -
+\f0 \cf2 \strokec9 0.13\cf2 \strokec4 ], to: [\cf2 \strokec9 28.61\cf2 \strokec4 , \cf2 \strokec9 77.21\cf2 \strokec4 ] \},\cf2 \strokec5 \
+\cf2 \strokec4     \{ from: [\cf2 \strokec9 37.78\cf2 \strokec4 , 
+\f1 \cf2 \strokec6 -
+\f0 \cf2 \strokec9 122.42\cf2 \strokec4 ], to: [
+\f1 \cf2 \strokec6 -
+\f0 \cf2 \strokec9 23.55\cf2 \strokec4 , 
+\f1 \cf2 \strokec6 -
+\f0 \cf2 \strokec9 46.63\cf2 \strokec4 ] \},\cf2 \strokec5 \
+\cf2 \strokec4     \{ from: [\cf2 \strokec9 1.35\cf2 \strokec4 , \cf2 \strokec9 103.82\cf2 \strokec4 ], to: [
+\f1 \cf2 \strokec6 -
+\f0 \cf2 \strokec9 33.87\cf2 \strokec4 , \cf2 \strokec9 151.21\cf2 \strokec4 ] \},\cf2 \strokec5 \
+\cf2 \strokec4     \{ from: [\cf2 \strokec9 28.61\cf2 \strokec4 , \cf2 \strokec9 77.21\cf2 \strokec4 ], to: [\cf2 \strokec9 36.19\cf2 \strokec4 , \cf2 \strokec9 44.01\cf2 \strokec4 ] \},\cf2 \strokec5 \
+\cf2 \strokec4     \{ from: [\cf2 \strokec9 51.51\cf2 \strokec4 , 
+\f1 \cf2 \strokec6 -
+\f0 \cf2 \strokec9 0.13\cf2 \strokec4 ], to: [\cf2 \strokec9 36.19\cf2 \strokec4 , \cf2 \strokec9 44.01\cf2 \strokec4 ] \},\cf2 \strokec5 \
+\cf2 \strokec4   ];\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6 function
+\f0 \cf2 \strokec7  latLngToXYZ\cf2 \strokec4 (\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec8   lat
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec9  number\cf2 \strokec4 ,\cf2 \strokec5 \
+\cf2 \strokec8   lng
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec9  number\cf2 \strokec4 ,\cf2 \strokec5 \
+\cf2 \strokec8   radius
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec9  number\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4 )
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec4  [\cf2 \strokec9 number\cf2 \strokec4 , \cf2 \strokec9 number\cf2 \strokec4 , \cf2 \strokec9 number\cf2 \strokec4 ] \{\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6   const
+\f0 \cf2 \strokec9  phi
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  ((\cf2 \strokec9 90
+\f1 \cf2 \strokec6  -
+\f0 \cf2 \strokec4  lat) 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  Math.\cf2 \strokec9 PI\cf2 \strokec4 ) 
+\f1 \cf2 \strokec6 /
+\f0 \cf2 \strokec9  180\cf2 \strokec4 ;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6   const
+\f0 \cf2 \strokec9  theta
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  ((lng 
+\f1 \cf2 \strokec6 +
+\f0 \cf2 \strokec9  180\cf2 \strokec4 ) 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  Math.\cf2 \strokec9 PI\cf2 \strokec4 ) 
+\f1 \cf2 \strokec6 /
+\f0 \cf2 \strokec9  180\cf2 \strokec4 ;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6   return
+\f0 \cf2 \strokec4  [\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6     -
+\f0 \cf2 \strokec4 (radius 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  Math.\cf2 \strokec7 sin\cf2 \strokec4 (phi) 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  Math.\cf2 \strokec7 cos\cf2 \strokec4 (theta)),\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4     radius 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  Math.\cf2 \strokec7 cos\cf2 \strokec4 (phi),\cf2 \strokec5 \
+\cf2 \strokec4     radius 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  Math.\cf2 \strokec7 sin\cf2 \strokec4 (phi) 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  Math.\cf2 \strokec7 sin\cf2 \strokec4 (theta),\cf2 \strokec5 \
+\cf2 \strokec4   ];\cf2 \strokec5 \
+\cf2 \strokec4 \}\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6 function
+\f0 \cf2 \strokec7  rotateY\cf2 \strokec4 (\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec8   x
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec9  number\cf2 \strokec4 ,\cf2 \strokec5 \
+\cf2 \strokec8   y
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec9  number\cf2 \strokec4 ,\cf2 \strokec5 \
+\cf2 \strokec8   z
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec9  number\cf2 \strokec4 ,\cf2 \strokec5 \
+\cf2 \strokec8   angle
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec9  number\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4 )
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec4  [\cf2 \strokec9 number\cf2 \strokec4 , \cf2 \strokec9 number\cf2 \strokec4 , \cf2 \strokec9 number\cf2 \strokec4 ] \{\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6   const
+\f0 \cf2 \strokec9  cos
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  Math.\cf2 \strokec7 cos\cf2 \strokec4 (angle);\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6   const
+\f0 \cf2 \strokec9  sin
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  Math.\cf2 \strokec7 sin\cf2 \strokec4 (angle);\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6   return
+\f0 \cf2 \strokec4  [x 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  cos 
+\f1 \cf2 \strokec6 +
+\f0 \cf2 \strokec4  z 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  sin, y, 
+\f1 \cf2 \strokec6 -
+\f0 \cf2 \strokec4 x 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  sin 
+\f1 \cf2 \strokec6 +
+\f0 \cf2 \strokec4  z 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  cos];\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4 \}\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6 function
+\f0 \cf2 \strokec7  rotateX\cf2 \strokec4 (\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec8   x
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec9  number\cf2 \strokec4 ,\cf2 \strokec5 \
+\cf2 \strokec8   y
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec9  number\cf2 \strokec4 ,\cf2 \strokec5 \
+\cf2 \strokec8   z
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec9  number\cf2 \strokec4 ,\cf2 \strokec5 \
+\cf2 \strokec8   angle
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec9  number\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4 )
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec4  [\cf2 \strokec9 number\cf2 \strokec4 , \cf2 \strokec9 number\cf2 \strokec4 , \cf2 \strokec9 number\cf2 \strokec4 ] \{\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6   const
+\f0 \cf2 \strokec9  cos
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  Math.\cf2 \strokec7 cos\cf2 \strokec4 (angle);\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6   const
+\f0 \cf2 \strokec9  sin
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  Math.\cf2 \strokec7 sin\cf2 \strokec4 (angle);\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6   return
+\f0 \cf2 \strokec4  [x, y 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  cos 
+\f1 \cf2 \strokec6 -
+\f0 \cf2 \strokec4  z 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  sin, y 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  sin 
+\f1 \cf2 \strokec6 +
+\f0 \cf2 \strokec4  z 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  cos];\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4 \}\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6 function
+\f0 \cf2 \strokec7  project\cf2 \strokec4 (\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec8   x
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec9  number\cf2 \strokec4 ,\cf2 \strokec5 \
+\cf2 \strokec8   y
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec9  number\cf2 \strokec4 ,\cf2 \strokec5 \
+\cf2 \strokec8   z
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec9  number\cf2 \strokec4 ,\cf2 \strokec5 \
+\cf2 \strokec8   cx
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec9  number\cf2 \strokec4 ,\cf2 \strokec5 \
+\cf2 \strokec8   cy
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec9  number\cf2 \strokec4 ,\cf2 \strokec5 \
+\cf2 \strokec8   fov
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec9  number\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4 )
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec4  [\cf2 \strokec9 number\cf2 \strokec4 , \cf2 \strokec9 number\cf2 \strokec4 , \cf2 \strokec9 number\cf2 \strokec4 ] \{\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6   const
+\f0 \cf2 \strokec9  scale
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  fov 
+\f1 \cf2 \strokec6 /
+\f0 \cf2 \strokec4  (fov 
+\f1 \cf2 \strokec6 +
+\f0 \cf2 \strokec4  z);\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6   return
+\f0 \cf2 \strokec4  [x 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  scale 
+\f1 \cf2 \strokec6 +
+\f0 \cf2 \strokec4  cx, y 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  scale 
+\f1 \cf2 \strokec6 +
+\f0 \cf2 \strokec4  cy, z];\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4 \}\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6 export function
+\f0 \cf2 \strokec7  Component\cf2 \strokec4 (\{\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec8   className\cf2 \strokec4 ,\cf2 \strokec5 \
+\cf2 \strokec8   size
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec9  600\cf2 \strokec4 ,\cf2 \strokec5 \
+\cf2 \strokec8   dotColor
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec3  "rgba(100, 180, 255, ALPHA)"\cf2 \strokec4 ,\cf2 \strokec5 \
+\cf2 \strokec8   arcColor
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec3  "rgba(100, 180, 255, 0.5)"\cf2 \strokec4 ,\cf2 \strokec5 \
+\cf2 \strokec8   markerColor
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec3  "rgba(100, 220, 255, 1)"\cf2 \strokec4 ,\cf2 \strokec5 \
+\cf2 \strokec8   autoRotateSpeed
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec9  0.002\cf2 \strokec4 ,\cf2 \strokec5 \
+\cf2 \strokec8   connections
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec9  DEFAULT_CONNECTIONS\cf2 \strokec4 ,\cf2 \strokec5 \
+\cf2 \strokec8   markers
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec9  DEFAULT_MARKERS\cf2 \strokec4 ,\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4 \}
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec7  GlobeProps\cf2 \strokec4 ) \{\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6   const
+\f0 \cf2 \strokec9  canvasRef
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec7  useRef\cf2 \strokec4 <\cf2 \strokec7 HTMLCanvasElement\cf2 \strokec4 >(\cf2 \strokec9 null\cf2 \strokec4 );\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6   const
+\f0 \cf2 \strokec9  rotYRef
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec7  useRef\cf2 \strokec4 (\cf2 \strokec9 0.4\cf2 \strokec4 );\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6   const
+\f0 \cf2 \strokec9  rotXRef
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec7  useRef\cf2 \strokec4 (\cf2 \strokec9 0.3\cf2 \strokec4 );\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6   const
+\f0 \cf2 \strokec9  dragRef
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec7  useRef\cf2 \strokec4 <\{\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec8     active
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec9  boolean\cf2 \strokec4 ;\cf2 \strokec5 \
+\cf2 \strokec8     startX
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec9  number\cf2 \strokec4 ;\cf2 \strokec5 \
+\cf2 \strokec8     startY
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec9  number\cf2 \strokec4 ;\cf2 \strokec5 \
+\cf2 \strokec8     startRotY
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec9  number\cf2 \strokec4 ;\cf2 \strokec5 \
+\cf2 \strokec8     startRotX
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec9  number\cf2 \strokec4 ;\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4   \}>(\{ active: \cf2 \strokec9 false\cf2 \strokec4 , startX: \cf2 \strokec9 0\cf2 \strokec4 , startY: \cf2 \strokec9 0\cf2 \strokec4 , startRotY: \cf2 \strokec9 0\cf2 \strokec4 , startRotX: \cf2 \strokec9 0\cf2 \strokec4  \});\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6   const
+\f0 \cf2 \strokec9  animRef
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec7  useRef\cf2 \strokec4 <\cf2 \strokec9 number\cf2 \strokec4 >(\cf2 \strokec9 0\cf2 \strokec4 );\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6   const
+\f0 \cf2 \strokec9  timeRef
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec7  useRef\cf2 \strokec4 (\cf2 \strokec9 0\cf2 \strokec4 );\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec10   // Generate globe dots (land approximation via density sampling)\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6   const
+\f0 \cf2 \strokec9  dotsRef
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec7  useRef\cf2 \strokec4 <[\cf2 \strokec9 number\cf2 \strokec4 , \cf2 \strokec9 number\cf2 \strokec4 , \cf2 \strokec9 number\cf2 \strokec4 ][]>([]);\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec7   useEffect\cf2 \strokec4 (() 
+\f1 \cf2 \strokec6 =>
+\f0 \cf2 \strokec4  \{\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6     const
+\f0 \cf2 \strokec9  dots
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec4  [\cf2 \strokec9 number\cf2 \strokec4 , \cf2 \strokec9 number\cf2 \strokec4 , \cf2 \strokec9 number\cf2 \strokec4 ][] 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec4  [];\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6     const
+\f0 \cf2 \strokec9  numDots
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec9  1200\cf2 \strokec4 ;\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec10     // Fibonacci sphere\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6     const
+\f0 \cf2 \strokec9  goldenRatio
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  (\cf2 \strokec9 1
+\f1 \cf2 \strokec6  +
+\f0 \cf2 \strokec4  Math.\cf2 \strokec7 sqrt\cf2 \strokec4 (\cf2 \strokec9 5\cf2 \strokec4 )) 
+\f1 \cf2 \strokec6 /
+\f0 \cf2 \strokec9  2\cf2 \strokec4 ;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6     for
+\f0 \cf2 \strokec4  (
+\f1 \cf2 \strokec6 let
+\f0 \cf2 \strokec4  i 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec9  0\cf2 \strokec4 ; i 
+\f1 \cf2 \strokec6 <
+\f0 \cf2 \strokec4  numDots; i
+\f1 \cf2 \strokec6 ++
+\f0 \cf2 \strokec4 ) \{\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec9  theta
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  (\cf2 \strokec9 2
+\f1 \cf2 \strokec6  *
+\f0 \cf2 \strokec4  Math.\cf2 \strokec9 PI
+\f1 \cf2 \strokec6  *
+\f0 \cf2 \strokec4  i) 
+\f1 \cf2 \strokec6 /
+\f0 \cf2 \strokec4  goldenRatio;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec9  phi
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  Math.\cf2 \strokec7 acos\cf2 \strokec4 (\cf2 \strokec9 1
+\f1 \cf2 \strokec6  -
+\f0 \cf2 \strokec4  (\cf2 \strokec9 2
+\f1 \cf2 \strokec6  *
+\f0 \cf2 \strokec4  (i 
+\f1 \cf2 \strokec6 +
+\f0 \cf2 \strokec9  0.5\cf2 \strokec4 )) 
+\f1 \cf2 \strokec6 /
+\f0 \cf2 \strokec4  numDots);\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec9  x
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  Math.\cf2 \strokec7 cos\cf2 \strokec4 (theta) 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  Math.\cf2 \strokec7 sin\cf2 \strokec4 (phi);\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec9  y
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  Math.\cf2 \strokec7 cos\cf2 \strokec4 (phi);\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec9  z
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  Math.\cf2 \strokec7 sin\cf2 \strokec4 (theta) 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  Math.\cf2 \strokec7 sin\cf2 \strokec4 (phi);\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4       dots.\cf2 \strokec7 push\cf2 \strokec4 ([x, y, z]);\cf2 \strokec5 \
+\cf2 \strokec4     \}\cf2 \strokec5 \
+\cf2 \strokec4     dotsRef.current 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec4  dots;\cf2 \strokec5 \
+\cf2 \strokec4   \}, []);\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6   const
+\f0 \cf2 \strokec9  draw
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec7  useCallback\cf2 \strokec4 (() 
+\f1 \cf2 \strokec6 =>
+\f0 \cf2 \strokec4  \{\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6     const
+\f0 \cf2 \strokec9  canvas
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  canvasRef.current;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6     if
+\f0 \cf2 \strokec4  (
+\f1 \cf2 \strokec6 !
+\f0 \cf2 \strokec4 canvas) 
+\f1 \cf2 \strokec6 return
+\f0 \cf2 \strokec4 ;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6     const
+\f0 \cf2 \strokec9  ctx
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  canvas.\cf2 \strokec7 getContext\cf2 \strokec4 (\cf2 \strokec3 "2d"\cf2 \strokec4 );\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6     if
+\f0 \cf2 \strokec4  (
+\f1 \cf2 \strokec6 !
+\f0 \cf2 \strokec4 ctx) 
+\f1 \cf2 \strokec6 return
+\f0 \cf2 \strokec4 ;\cf2 \strokec5 \
+\
+
+\f1 \cf2 \strokec6     const
+\f0 \cf2 \strokec9  dpr
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  window.devicePixelRatio 
+\f1 \cf2 \strokec6 ||
+\f0 \cf2 \strokec9  1\cf2 \strokec4 ;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6     const
+\f0 \cf2 \strokec9  w
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  canvas.clientWidth;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6     const
+\f0 \cf2 \strokec9  h
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  canvas.clientHeight;\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4     canvas.width 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec4  w 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  dpr;\cf2 \strokec5 \
+\cf2 \strokec4     canvas.height 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec4  h 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  dpr;\cf2 \strokec5 \
+\cf2 \strokec4     ctx.\cf2 \strokec7 scale\cf2 \strokec4 (dpr, dpr);\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6     const
+\f0 \cf2 \strokec9  cx
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  w 
+\f1 \cf2 \strokec6 /
+\f0 \cf2 \strokec9  2\cf2 \strokec4 ;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6     const
+\f0 \cf2 \strokec9  cy
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  h 
+\f1 \cf2 \strokec6 /
+\f0 \cf2 \strokec9  2\cf2 \strokec4 ;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6     const
+\f0 \cf2 \strokec9  radius
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  Math.\cf2 \strokec7 min\cf2 \strokec4 (w, h) 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec9  0.38\cf2 \strokec4 ;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6     const
+\f0 \cf2 \strokec9  fov
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec9  600\cf2 \strokec4 ;\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec10     // Auto rotate\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6     if
+\f0 \cf2 \strokec4  (
+\f1 \cf2 \strokec6 !
+\f0 \cf2 \strokec4 dragRef.current.active) \{\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4       rotYRef.current 
+\f1 \cf2 \strokec6 +=
+\f0 \cf2 \strokec4  autoRotateSpeed;\cf2 \strokec5 \
+\cf2 \strokec4     \}\cf2 \strokec5 \
+\
+\cf2 \strokec4     timeRef.current 
+\f1 \cf2 \strokec6 +=
+\f0 \cf2 \strokec9  0.015\cf2 \strokec4 ;\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6     const
+\f0 \cf2 \strokec9  time
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  timeRef.current;\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4     ctx.\cf2 \strokec7 clearRect\cf2 \strokec4 (\cf2 \strokec9 0\cf2 \strokec4 , \cf2 \strokec9 0\cf2 \strokec4 , w, h);\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec10     // Outer glow\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6     const
+\f0 \cf2 \strokec9  glowGrad
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  ctx.\cf2 \strokec7 createRadialGradient\cf2 \strokec4 (cx, cy, radius 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec9  0.8\cf2 \strokec4 , cx, cy, radius 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec9  1.5\cf2 \strokec4 );\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4     glowGrad.\cf2 \strokec7 addColorStop\cf2 \strokec4 (\cf2 \strokec9 0\cf2 \strokec4 , \cf2 \strokec3 "rgba(60, 140, 255, 0.03)"\cf2 \strokec4 );\cf2 \strokec5 \
+\cf2 \strokec4     glowGrad.\cf2 \strokec7 addColorStop\cf2 \strokec4 (\cf2 \strokec9 1\cf2 \strokec4 , \cf2 \strokec3 "rgba(60, 140, 255, 0)"\cf2 \strokec4 );\cf2 \strokec5 \
+\cf2 \strokec4     ctx.fillStyle 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec4  glowGrad;\cf2 \strokec5 \
+\cf2 \strokec4     ctx.\cf2 \strokec7 fillRect\cf2 \strokec4 (\cf2 \strokec9 0\cf2 \strokec4 , \cf2 \strokec9 0\cf2 \strokec4 , w, h);\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec10     // Globe outline\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4     ctx.\cf2 \strokec7 beginPath\cf2 \strokec4 ();\cf2 \strokec5 \
+\cf2 \strokec4     ctx.\cf2 \strokec7 arc\cf2 \strokec4 (cx, cy, radius, \cf2 \strokec9 0\cf2 \strokec4 , Math.\cf2 \strokec9 PI
+\f1 \cf2 \strokec6  *
+\f0 \cf2 \strokec9  2\cf2 \strokec4 );\cf2 \strokec5 \
+\cf2 \strokec4     ctx.strokeStyle 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec3  "rgba(100, 180, 255, 0.06)"\cf2 \strokec4 ;\cf2 \strokec5 \
+\cf2 \strokec4     ctx.lineWidth 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec9  1\cf2 \strokec4 ;\cf2 \strokec5 \
+\cf2 \strokec4     ctx.\cf2 \strokec7 stroke\cf2 \strokec4 ();\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6     const
+\f0 \cf2 \strokec9  ry
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  rotYRef.current;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6     const
+\f0 \cf2 \strokec9  rx
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  rotXRef.current;\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec10     // Draw dots\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6     const
+\f0 \cf2 \strokec9  dots
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  dotsRef.current;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6     for
+\f0 \cf2 \strokec4  (
+\f1 \cf2 \strokec6 let
+\f0 \cf2 \strokec4  i 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec9  0\cf2 \strokec4 ; i 
+\f1 \cf2 \strokec6 <
+\f0 \cf2 \strokec4  dots.\cf2 \strokec9 length\cf2 \strokec4 ; i
+\f1 \cf2 \strokec6 ++
+\f0 \cf2 \strokec4 ) \{\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       let
+\f0 \cf2 \strokec4  [x, y, z] 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec4  dots[i];\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4       x 
+\f1 \cf2 \strokec6 *=
+\f0 \cf2 \strokec4  radius;\cf2 \strokec5 \
+\cf2 \strokec4       y 
+\f1 \cf2 \strokec6 *=
+\f0 \cf2 \strokec4  radius;\cf2 \strokec5 \
+\cf2 \strokec4       z 
+\f1 \cf2 \strokec6 *=
+\f0 \cf2 \strokec4  radius;\cf2 \strokec5 \
+\
+\cf2 \strokec4       [x, y, z] 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec7  rotateX\cf2 \strokec4 (x, y, z, rx);\cf2 \strokec5 \
+\cf2 \strokec4       [x, y, z] 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec7  rotateY\cf2 \strokec4 (x, y, z, ry);\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6       if
+\f0 \cf2 \strokec4  (z 
+\f1 \cf2 \strokec6 >
+\f0 \cf2 \strokec9  0\cf2 \strokec4 ) 
+\f1 \cf2 \strokec6 continue
+\f0 \cf2 \strokec4 ; \cf2 \strokec10 // back-face cull\cf2 \strokec5 \
+\
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec4  [\cf2 \strokec9 sx\cf2 \strokec4 , \cf2 \strokec9 sy\cf2 \strokec4 ] 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec7  project\cf2 \strokec4 (x, y, z, cx, cy, fov);\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec9  depthAlpha
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  Math.\cf2 \strokec7 max\cf2 \strokec4 (\cf2 \strokec9 0.1\cf2 \strokec4 , \cf2 \strokec9 1
+\f1 \cf2 \strokec6  -
+\f0 \cf2 \strokec4  (z 
+\f1 \cf2 \strokec6 +
+\f0 \cf2 \strokec4  radius) 
+\f1 \cf2 \strokec6 /
+\f0 \cf2 \strokec4  (\cf2 \strokec9 2
+\f1 \cf2 \strokec6  *
+\f0 \cf2 \strokec4  radius));\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec9  dotSize
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec9  1
+\f1 \cf2 \strokec6  +
+\f0 \cf2 \strokec4  depthAlpha 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec9  0.8\cf2 \strokec4 ;\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4       ctx.\cf2 \strokec7 beginPath\cf2 \strokec4 ();\cf2 \strokec5 \
+\cf2 \strokec4       ctx.\cf2 \strokec7 arc\cf2 \strokec4 (sx, sy, dotSize, \cf2 \strokec9 0\cf2 \strokec4 , Math.\cf2 \strokec9 PI
+\f1 \cf2 \strokec6  *
+\f0 \cf2 \strokec9  2\cf2 \strokec4 );\cf2 \strokec5 \
+\cf2 \strokec4       ctx.fillStyle 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec4  dotColor.\cf2 \strokec7 replace\cf2 \strokec4 (\cf2 \strokec3 "ALPHA"\cf2 \strokec4 , depthAlpha.\cf2 \strokec7 toFixed\cf2 \strokec4 (\cf2 \strokec9 2\cf2 \strokec4 ));\cf2 \strokec5 \
+\cf2 \strokec4       ctx.\cf2 \strokec7 fill\cf2 \strokec4 ();\cf2 \strokec5 \
+\cf2 \strokec4     \}\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec10     // Draw connections as arcs\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6     for
+\f0 \cf2 \strokec4  (
+\f1 \cf2 \strokec6 const
+\f0 \cf2 \strokec9  conn
+\f1 \cf2 \strokec6  of
+\f0 \cf2 \strokec4  connections) \{\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec4  [\cf2 \strokec9 lat1\cf2 \strokec4 , \cf2 \strokec9 lng1\cf2 \strokec4 ] 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec4  conn.from;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec4  [\cf2 \strokec9 lat2\cf2 \strokec4 , \cf2 \strokec9 lng2\cf2 \strokec4 ] 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec4  conn.to;\cf2 \strokec5 \
+\
+
+\f1 \cf2 \strokec6       let
+\f0 \cf2 \strokec4  [x1, y1, z1] 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec7  latLngToXYZ\cf2 \strokec4 (lat1, lng1, radius);\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       let
+\f0 \cf2 \strokec4  [x2, y2, z2] 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec7  latLngToXYZ\cf2 \strokec4 (lat2, lng2, radius);\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4       [x1, y1, z1] 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec7  rotateX\cf2 \strokec4 (x1, y1, z1, rx);\cf2 \strokec5 \
+\cf2 \strokec4       [x1, y1, z1] 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec7  rotateY\cf2 \strokec4 (x1, y1, z1, ry);\cf2 \strokec5 \
+\cf2 \strokec4       [x2, y2, z2] 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec7  rotateX\cf2 \strokec4 (x2, y2, z2, rx);\cf2 \strokec5 \
+\cf2 \strokec4       [x2, y2, z2] 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec7  rotateY\cf2 \strokec4 (x2, y2, z2, ry);\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec10       // Only draw if both points face camera\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6       if
+\f0 \cf2 \strokec4  (z1 
+\f1 \cf2 \strokec6 >
+\f0 \cf2 \strokec4  radius 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec9  0.3
+\f1 \cf2 \strokec6  &&
+\f0 \cf2 \strokec4  z2 
+\f1 \cf2 \strokec6 >
+\f0 \cf2 \strokec4  radius 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec9  0.3\cf2 \strokec4 ) 
+\f1 \cf2 \strokec6 continue
+\f0 \cf2 \strokec4 ;\cf2 \strokec5 \
+\
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec4  [\cf2 \strokec9 sx1\cf2 \strokec4 , \cf2 \strokec9 sy1\cf2 \strokec4 ] 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec7  project\cf2 \strokec4 (x1, y1, z1, cx, cy, fov);\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec4  [\cf2 \strokec9 sx2\cf2 \strokec4 , \cf2 \strokec9 sy2\cf2 \strokec4 ] 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec7  project\cf2 \strokec4 (x2, y2, z2, cx, cy, fov);\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec10       // Elevated midpoint for arc\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec9  midX
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  (x1 
+\f1 \cf2 \strokec6 +
+\f0 \cf2 \strokec4  x2) 
+\f1 \cf2 \strokec6 /
+\f0 \cf2 \strokec9  2\cf2 \strokec4 ;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec9  midY
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  (y1 
+\f1 \cf2 \strokec6 +
+\f0 \cf2 \strokec4  y2) 
+\f1 \cf2 \strokec6 /
+\f0 \cf2 \strokec9  2\cf2 \strokec4 ;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec9  midZ
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  (z1 
+\f1 \cf2 \strokec6 +
+\f0 \cf2 \strokec4  z2) 
+\f1 \cf2 \strokec6 /
+\f0 \cf2 \strokec9  2\cf2 \strokec4 ;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec9  midLen
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  Math.\cf2 \strokec7 sqrt\cf2 \strokec4 (midX 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  midX 
+\f1 \cf2 \strokec6 +
+\f0 \cf2 \strokec4  midY 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  midY 
+\f1 \cf2 \strokec6 +
+\f0 \cf2 \strokec4  midZ 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  midZ);\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec9  arcHeight
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  radius 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec9  1.25\cf2 \strokec4 ;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec9  elevX
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  (midX 
+\f1 \cf2 \strokec6 /
+\f0 \cf2 \strokec4  midLen) 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  arcHeight;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec9  elevY
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  (midY 
+\f1 \cf2 \strokec6 /
+\f0 \cf2 \strokec4  midLen) 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  arcHeight;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec9  elevZ
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  (midZ 
+\f1 \cf2 \strokec6 /
+\f0 \cf2 \strokec4  midLen) 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  arcHeight;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec4  [\cf2 \strokec9 scx\cf2 \strokec4 , \cf2 \strokec9 scy\cf2 \strokec4 ] 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec7  project\cf2 \strokec4 (elevX, elevY, elevZ, cx, cy, fov);\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4       ctx.\cf2 \strokec7 beginPath\cf2 \strokec4 ();\cf2 \strokec5 \
+\cf2 \strokec4       ctx.\cf2 \strokec7 moveTo\cf2 \strokec4 (sx1, sy1);\cf2 \strokec5 \
+\cf2 \strokec4       ctx.\cf2 \strokec7 quadraticCurveTo\cf2 \strokec4 (scx, scy, sx2, sy2);\cf2 \strokec5 \
+\cf2 \strokec4       ctx.strokeStyle 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec4  arcColor;\cf2 \strokec5 \
+\cf2 \strokec4       ctx.lineWidth 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec9  1.2\cf2 \strokec4 ;\cf2 \strokec5 \
+\cf2 \strokec4       ctx.\cf2 \strokec7 stroke\cf2 \strokec4 ();\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec10       // Traveling dot along arc\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec9  t
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  (Math.\cf2 \strokec7 sin\cf2 \strokec4 (time 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec9  1.2
+\f1 \cf2 \strokec6  +
+\f0 \cf2 \strokec4  lat1 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec9  0.1\cf2 \strokec4 ) 
+\f1 \cf2 \strokec6 +
+\f0 \cf2 \strokec9  1\cf2 \strokec4 ) 
+\f1 \cf2 \strokec6 /
+\f0 \cf2 \strokec9  2\cf2 \strokec4 ;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec9  tx
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  (\cf2 \strokec9 1
+\f1 \cf2 \strokec6  -
+\f0 \cf2 \strokec4  t) 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  (\cf2 \strokec9 1
+\f1 \cf2 \strokec6  -
+\f0 \cf2 \strokec4  t) 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  sx1 
+\f1 \cf2 \strokec6 +
+\f0 \cf2 \strokec9  2
+\f1 \cf2 \strokec6  *
+\f0 \cf2 \strokec4  (\cf2 \strokec9 1
+\f1 \cf2 \strokec6  -
+\f0 \cf2 \strokec4  t) 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  t 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  scx 
+\f1 \cf2 \strokec6 +
+\f0 \cf2 \strokec4  t 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  t 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  sx2;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec9  ty
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  (\cf2 \strokec9 1
+\f1 \cf2 \strokec6  -
+\f0 \cf2 \strokec4  t) 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  (\cf2 \strokec9 1
+\f1 \cf2 \strokec6  -
+\f0 \cf2 \strokec4  t) 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  sy1 
+\f1 \cf2 \strokec6 +
+\f0 \cf2 \strokec9  2
+\f1 \cf2 \strokec6  *
+\f0 \cf2 \strokec4  (\cf2 \strokec9 1
+\f1 \cf2 \strokec6  -
+\f0 \cf2 \strokec4  t) 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  t 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  scy 
+\f1 \cf2 \strokec6 +
+\f0 \cf2 \strokec4  t 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  t 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec4  sy2;\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4       ctx.\cf2 \strokec7 beginPath\cf2 \strokec4 ();\cf2 \strokec5 \
+\cf2 \strokec4       ctx.\cf2 \strokec7 arc\cf2 \strokec4 (tx, ty, \cf2 \strokec9 2\cf2 \strokec4 , \cf2 \strokec9 0\cf2 \strokec4 , Math.\cf2 \strokec9 PI
+\f1 \cf2 \strokec6  *
+\f0 \cf2 \strokec9  2\cf2 \strokec4 );\cf2 \strokec5 \
+\cf2 \strokec4       ctx.fillStyle 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec4  markerColor;\cf2 \strokec5 \
+\cf2 \strokec4       ctx.\cf2 \strokec7 fill\cf2 \strokec4 ();\cf2 \strokec5 \
+\cf2 \strokec4     \}\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec10     // Draw markers\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6     for
+\f0 \cf2 \strokec4  (
+\f1 \cf2 \strokec6 const
+\f0 \cf2 \strokec9  marker
+\f1 \cf2 \strokec6  of
+\f0 \cf2 \strokec4  markers) \{\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       let
+\f0 \cf2 \strokec4  [x, y, z] 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec7  latLngToXYZ\cf2 \strokec4 (marker.lat, marker.lng, radius);\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4       [x, y, z] 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec7  rotateX\cf2 \strokec4 (x, y, z, rx);\cf2 \strokec5 \
+\cf2 \strokec4       [x, y, z] 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec7  rotateY\cf2 \strokec4 (x, y, z, ry);\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6       if
+\f0 \cf2 \strokec4  (z 
+\f1 \cf2 \strokec6 >
+\f0 \cf2 \strokec4  radius 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec9  0.1\cf2 \strokec4 ) 
+\f1 \cf2 \strokec6 continue
+\f0 \cf2 \strokec4 ;\cf2 \strokec5 \
+\
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec4  [\cf2 \strokec9 sx\cf2 \strokec4 , \cf2 \strokec9 sy\cf2 \strokec4 ] 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec7  project\cf2 \strokec4 (x, y, z, cx, cy, fov);\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec10       // Pulse ring\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec9  pulse
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  Math.\cf2 \strokec7 sin\cf2 \strokec4 (time 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec9  2
+\f1 \cf2 \strokec6  +
+\f0 \cf2 \strokec4  marker.lat) 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec9  0.5
+\f1 \cf2 \strokec6  +
+\f0 \cf2 \strokec9  0.5\cf2 \strokec4 ;\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4       ctx.\cf2 \strokec7 beginPath\cf2 \strokec4 ();\cf2 \strokec5 \
+\cf2 \strokec4       ctx.\cf2 \strokec7 arc\cf2 \strokec4 (sx, sy, \cf2 \strokec9 4
+\f1 \cf2 \strokec6  +
+\f0 \cf2 \strokec4  pulse 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec9  4\cf2 \strokec4 , \cf2 \strokec9 0\cf2 \strokec4 , Math.\cf2 \strokec9 PI
+\f1 \cf2 \strokec6  *
+\f0 \cf2 \strokec9  2\cf2 \strokec4 );\cf2 \strokec5 \
+\cf2 \strokec4       ctx.strokeStyle 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec4  markerColor.\cf2 \strokec7 replace\cf2 \strokec4 (\cf2 \strokec3 "1)"\cf2 \strokec4 , \cf2 \strokec3 `$\{\cf2 \strokec9 0.2
+\f1 \cf2 \strokec6  +
+\f0 \cf2 \strokec4  pulse
+\f1 \cf2 \strokec6  *
+\f0 \cf2 \strokec9  0.15\cf2 \strokec3 \})`\cf2 \strokec4 );\cf2 \strokec5 \
+\cf2 \strokec4       ctx.lineWidth 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec9  1\cf2 \strokec4 ;\cf2 \strokec5 \
+\cf2 \strokec4       ctx.\cf2 \strokec7 stroke\cf2 \strokec4 ();\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec10       // Core dot\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4       ctx.\cf2 \strokec7 beginPath\cf2 \strokec4 ();\cf2 \strokec5 \
+\cf2 \strokec4       ctx.\cf2 \strokec7 arc\cf2 \strokec4 (sx, sy, \cf2 \strokec9 2.5\cf2 \strokec4 , \cf2 \strokec9 0\cf2 \strokec4 , Math.\cf2 \strokec9 PI
+\f1 \cf2 \strokec6  *
+\f0 \cf2 \strokec9  2\cf2 \strokec4 );\cf2 \strokec5 \
+\cf2 \strokec4       ctx.fillStyle 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec4  markerColor;\cf2 \strokec5 \
+\cf2 \strokec4       ctx.\cf2 \strokec7 fill\cf2 \strokec4 ();\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec10       // Label\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6       if
+\f0 \cf2 \strokec4  (marker.label) \{\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4         ctx.font 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec3  "10px system-ui, sans-serif"\cf2 \strokec4 ;\cf2 \strokec5 \
+\cf2 \strokec4         ctx.fillStyle 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec4  markerColor.\cf2 \strokec7 replace\cf2 \strokec4 (\cf2 \strokec3 "1)"\cf2 \strokec4 , \cf2 \strokec3 "0.6)"\cf2 \strokec4 );\cf2 \strokec5 \
+\cf2 \strokec4         ctx.\cf2 \strokec7 fillText\cf2 \strokec4 (marker.label, sx 
+\f1 \cf2 \strokec6 +
+\f0 \cf2 \strokec9  8\cf2 \strokec4 , sy 
+\f1 \cf2 \strokec6 +
+\f0 \cf2 \strokec9  3\cf2 \strokec4 );\cf2 \strokec5 \
+\cf2 \strokec4       \}\cf2 \strokec5 \
+\cf2 \strokec4     \}\cf2 \strokec5 \
+\
+\cf2 \strokec4     animRef.current 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec7  requestAnimationFrame\cf2 \strokec4 (draw);\cf2 \strokec5 \
+\cf2 \strokec4   \}, [dotColor, arcColor, markerColor, autoRotateSpeed, connections, markers]);\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec7   useEffect\cf2 \strokec4 (() 
+\f1 \cf2 \strokec6 =>
+\f0 \cf2 \strokec4  \{\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4     animRef.current 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec7  requestAnimationFrame\cf2 \strokec4 (draw);\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6     return
+\f0 \cf2 \strokec4  () 
+\f1 \cf2 \strokec6 =>
+\f0 \cf2 \strokec7  cancelAnimationFrame\cf2 \strokec4 (animRef.current);\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4   \}, [draw]);\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec10   // Mouse drag handlers\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6   const
+\f0 \cf2 \strokec9  onPointerDown
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec7  useCallback\cf2 \strokec4 (\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4     (\cf2 \strokec8 e
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec7  React\cf2 \strokec4 .\cf2 \strokec7 PointerEvent\cf2 \strokec4 ) 
+\f1 \cf2 \strokec6 =>
+\f0 \cf2 \strokec4  \{\cf2 \strokec5 \
+\cf2 \strokec4       dragRef.current 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec4  \{\cf2 \strokec5 \
+\cf2 \strokec4         active: \cf2 \strokec9 true\cf2 \strokec4 ,\cf2 \strokec5 \
+\cf2 \strokec4         startX: e.clientX,\cf2 \strokec5 \
+\cf2 \strokec4         startY: e.clientY,\cf2 \strokec5 \
+\cf2 \strokec4         startRotY: rotYRef.current,\cf2 \strokec5 \
+\cf2 \strokec4         startRotX: rotXRef.current,\cf2 \strokec5 \
+\cf2 \strokec4       \};\cf2 \strokec5 \
+\cf2 \strokec4       (e.target 
+\f1 \cf2 \strokec6 as
+\f0 \cf2 \strokec7  HTMLElement\cf2 \strokec4 ).\cf2 \strokec7 setPointerCapture\cf2 \strokec4 (e.pointerId);\cf2 \strokec5 \
+\cf2 \strokec4     \},\cf2 \strokec5 \
+\cf2 \strokec4     []\cf2 \strokec5 \
+\cf2 \strokec4   );\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6   const
+\f0 \cf2 \strokec9  onPointerMove
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec7  useCallback\cf2 \strokec4 (\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4     (\cf2 \strokec8 e
+\f1 \cf2 \strokec6 :
+\f0 \cf2 \strokec7  React\cf2 \strokec4 .\cf2 \strokec7 PointerEvent\cf2 \strokec4 ) 
+\f1 \cf2 \strokec6 =>
+\f0 \cf2 \strokec4  \{\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6       if
+\f0 \cf2 \strokec4  (
+\f1 \cf2 \strokec6 !
+\f0 \cf2 \strokec4 dragRef.current.active) 
+\f1 \cf2 \strokec6 return
+\f0 \cf2 \strokec4 ;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec9  dx
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  e.clientX 
+\f1 \cf2 \strokec6 -
+\f0 \cf2 \strokec4  dragRef.current.startX;\cf2 \strokec5 \
+
+\f1 \cf2 \strokec6       const
+\f0 \cf2 \strokec9  dy
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec4  e.clientY 
+\f1 \cf2 \strokec6 -
+\f0 \cf2 \strokec4  dragRef.current.startY;\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4       rotYRef.current 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec4  dragRef.current.startRotY 
+\f1 \cf2 \strokec6 +
+\f0 \cf2 \strokec4  dx 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec9  0.005\cf2 \strokec4 ;\cf2 \strokec5 \
+\cf2 \strokec4       rotXRef.current 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec4  Math.\cf2 \strokec7 max\cf2 \strokec4 (\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6         -
+\f0 \cf2 \strokec9 1\cf2 \strokec4 ,\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4         Math.\cf2 \strokec7 min\cf2 \strokec4 (\cf2 \strokec9 1\cf2 \strokec4 , dragRef.current.startRotX 
+\f1 \cf2 \strokec6 +
+\f0 \cf2 \strokec4  dy 
+\f1 \cf2 \strokec6 *
+\f0 \cf2 \strokec9  0.005\cf2 \strokec4 )\cf2 \strokec5 \
+\cf2 \strokec4       );\cf2 \strokec5 \
+\cf2 \strokec4     \},\cf2 \strokec5 \
+\cf2 \strokec4     []\cf2 \strokec5 \
+\cf2 \strokec4   );\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6   const
+\f0 \cf2 \strokec9  onPointerUp
+\f1 \cf2 \strokec6  =
+\f0 \cf2 \strokec7  useCallback\cf2 \strokec4 (() 
+\f1 \cf2 \strokec6 =>
+\f0 \cf2 \strokec4  \{\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4     dragRef.current.active 
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec9  false\cf2 \strokec4 ;\cf2 \strokec5 \
+\cf2 \strokec4   \}, []);\cf2 \strokec5 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\f1 \cf2 \strokec6   return
+\f0 \cf2 \strokec4  (\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4     <\cf2 \strokec11 canvas\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec7       ref
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec4 \{canvasRef\}\cf2 \strokec5 \
+\cf2 \strokec7       className
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec4 \{\cf2 \strokec7 cn\cf2 \strokec4 (\cf2 \strokec3 "w-full h-full cursor-grab active:cursor-grabbing"\cf2 \strokec4 , className)\}\cf2 \strokec5 \
+\cf2 \strokec7       style
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec4 \{\{ width: size, height: size \}\}\cf2 \strokec5 \
+\cf2 \strokec7       onPointerDown
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec4 \{onPointerDown\}\cf2 \strokec5 \
+\cf2 \strokec7       onPointerMove
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec4 \{onPointerMove\}\cf2 \strokec5 \
+\cf2 \strokec7       onPointerUp
+\f1 \cf2 \strokec6 =
+\f0 \cf2 \strokec4 \{onPointerUp\}\cf2 \strokec5 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec4     />\cf2 \strokec5 \
+\cf2 \strokec4   );\cf2 \strokec5 \
+\cf2 \strokec4 \}
+\f2 \cf2 \strokec4 \
+}

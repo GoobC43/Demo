@@ -1,0 +1,312 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{verbatim}
+
+\title{\textbf{HarborGuard AI MVP Specification}\\
+Fully Functional Decision-Support Platform}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{1. MVP Objective}
+
+Build a fully functional maritime disruption decision-support system for U.S.-based mid-market electronics manufacturers.
+
+The MVP must:
+
+\begin{itemize}
+    \item Detect a maritime disruption event
+    \item Map exposure to inbound SKUs
+    \item Compute inventory depletion risk
+    \item Simulate 3 mitigation strategies
+    \item Output financially optimized recommendation
+    \item Generate actionable mitigation drafts
+\end{itemize}
+
+No unnecessary features. No overengineering.
+
+\section*{2. What We ARE Building}
+
+\subsection*{Core Features}
+
+\begin{enumerate}
+    \item Manual + API-triggered disruption input
+    \item Inventory runway calculation
+    \item Revenue-at-risk computation
+    \item Strategy comparison engine (3 strategies)
+    \item Constrained optimization logic
+    \item LLM-generated mitigation drafts
+    \item Simple web dashboard
+\end{enumerate}
+
+\subsection*{What We Are NOT Building}
+
+\begin{itemize}
+    \item Full ERP integration
+    \item Multi-agent orchestration
+    \item Reinforcement learning
+    \item Real-time streaming architecture
+    \item Advanced ML prediction
+\end{itemize}
+
+\section*{3. User Workflow}
+
+\subsection*{Step 1: Disruption Trigger}
+
+User inputs or system detects:
+
+\begin{verbatim}
+Port: Los Angeles
+Disruption Type: Labor Strike
+Expected Delay: 12 days
+Severity: 0.8
+\end{verbatim}
+
+\subsection*{Step 2: Exposure Mapping}
+
+System computes:
+
+\begin{itemize}
+    \item Shipments routed via LA
+    \item SKUs inside affected containers
+    \item Inventory runway per SKU
+    \item Stockout prediction
+\end{itemize}
+
+\subsection*{Step 3: Revenue-at-Risk}
+
+For SKU $i$:
+
+\[
+Runway_i = \frac{Inventory_i}{DailyDemand_i}
+\]
+
+If:
+
+\[
+Runway_i < ExpectedDelay
+\]
+
+Then:
+
+\[
+RevenueAtRisk_i = Demand_i \times Price_i \times DelayGap
+\]
+
+Total:
+
+\[
+TotalRevenueAtRisk = \sum_i RevenueAtRisk_i
+\]
+
+\subsection*{Step 4: Strategy Simulation}
+
+Three strategies:
+
+\begin{itemize}
+    \item $S_1$: Do Nothing
+    \item $S_2$: Air Freight All
+    \item $S_3$: Split (60\% Reroute, 20\% Air, 20\% Buffer)
+\end{itemize}
+
+For each strategy compute:
+
+\[
+NetImpact_s = RevenuePreserved_s - MitigationCost_s
+\]
+
+System selects:
+
+\[
+S^* = \arg\max_s NetImpact_s
+\]
+
+\section*{4. Data Schema (Minimal)}
+
+\subsection*{Shipments Table}
+
+\begin{verbatim}
+shipment_id
+sku_id
+port
+arrival_date
+container_quantity
+\end{verbatim}
+
+\subsection*{SKU Table}
+
+\begin{verbatim}
+sku_id
+daily_demand
+unit_price
+unit_margin
+criticality_score
+\end{verbatim}
+
+\subsection*{Inventory Table}
+
+\begin{verbatim}
+sku_id
+on_hand_units
+\end{verbatim}
+
+\subsection*{Risk Profile Table}
+
+\begin{verbatim}
+risk_tolerance (0-1)
+sla_weight
+working_capital_limit
+\end{verbatim}
+
+\section*{5. Backend Architecture}
+
+\subsection*{Stack}
+
+\begin{itemize}
+    \item Python (FastAPI)
+    \item PostgreSQL or BigQuery
+    \item SciPy or custom solver
+    \item Gemini API for drafting
+    \item Simple React frontend
+\end{itemize}
+
+\subsection*{API Endpoints}
+
+\textbf{POST /disruption}
+
+\begin{verbatim}
+{
+  port: "LA",
+  delay_days: 12
+}
+\end{verbatim}
+
+\textbf{GET /exposure-report}
+
+Returns:
+
+\begin{verbatim}
+{
+  affected_skus: [...],
+  revenue_at_risk: 38.4M
+}
+\end{verbatim}
+
+\textbf{GET /strategy-comparison}
+
+Returns:
+
+\begin{verbatim}
+{
+  S1: { net_impact: -18M },
+  S2: { net_impact: 5.2M },
+  S3: { net_impact: 9.5M }
+}
+\end{verbatim}
+
+\textbf{GET /recommended-action}
+
+Returns:
+
+\begin{verbatim}
+{
+  strategy: "Split Strategy",
+  cost: 2.8M,
+  revenue_preserved: 34.1M,
+  justification: "..."
+}
+\end{verbatim}
+
+\section*{6. Optimization Logic (Simplified)}
+
+\subsection*{Revenue Preserved}
+
+\[
+RevenuePreserved_s = TotalRevenueAtRisk - ResidualLoss_s
+\]
+
+\subsection*{Mitigation Cost}
+
+\[
+MitigationCost_s =
+AirCost_s + RerouteCost_s + HoldingCost_s
+\]
+
+\subsection*{Constraint: Working Capital}
+
+\[
+MitigationCost_s \leq WorkingCapitalLimit
+\]
+
+\section*{7. LLM Action Generation}
+
+Prompt Template:
+
+\begin{verbatim}
+You are a VP of Supply Chain.
+A 12-day disruption at Port of LA
+threatens 18 SKUs.
+
+Recommended strategy:
+60% reroute
+20% air freight
+20% buffer
+
+Draft an email to supplier requesting reroute.
+\end{verbatim}
+
+System outputs:
+
+\begin{itemize}
+    \item Supplier email
+    \item Executive memo
+    \item Logistics request
+\end{itemize}
+
+\section*{8. Frontend Requirements}
+
+Dashboard must display:
+
+\begin{itemize}
+    \item Disruption summary
+    \item Revenue-at-risk
+    \item Strategy comparison table
+    \item Recommended action
+    \item Generated drafts
+\end{itemize}
+
+Minimal UI. Clear numbers.
+
+\section*{9. MVP Success Criteria}
+
+The system is considered functional if:
+
+\begin{itemize}
+    \item Disruption input produces exposure report
+    \item Revenue-at-risk is computed correctly
+    \item Three strategies are compared numerically
+    \item Optimization selects highest net-impact strategy
+    \item LLM generates actionable drafts
+    \item All results display cleanly on dashboard
+\end{itemize}
+
+\section*{10. MVP Definition of Value}
+
+The MVP must allow a VP of Supply Chain to answer:
+
+\begin{quote}
+"If Port of Los Angeles shuts down for 12 days,
+what should I do right now,
+and what is the financial impact?"
+\end{quote}
+
+If the system answers this clearly, it is useful.
+
+\end{document}
